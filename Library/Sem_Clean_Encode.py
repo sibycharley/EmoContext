@@ -95,7 +95,7 @@ class SemEval_Clean():
 		#Saving the Vocabulary
 		unique_words = list(set(TWord))
 		print (len(unique_words))
-		np.savetxt('Vocabulary_Dev_v3.txt', unique_words, delimiter=',', fmt='%s', encoding='utf-8')	
+		np.savetxt('./Clean/Vocabulary.txt', unique_words, delimiter=',', fmt='%s', encoding='utf-8')	
 
 	#Creating One Hot Vectors
 	def CreateOneHot(self):
@@ -104,13 +104,13 @@ class SemEval_Clean():
 		self.Voc = 20000
 
 		#Reading the Vocabulary file
-		TWord = pd.read_csv('Vocabulary_Dev_v3.txt', header=None, encoding='utf-8', delimiter='\n').as_matrix()
+		TWord = pd.read_csv('./Clean/Vocabulary.txt', header=None, encoding='utf-8', delimiter='\n').as_matrix()
 		TWord = TWord.ravel()
 
 		TOne = [one_hot(d, self.Voc) for d in TWord]
 		TOne = list(map(int, [list(itertools.chain(*TOne))][0]))
 		W2I = dict(zip(TWord, TOne))
-		json.dump(W2I, open('WIndex_Dev_v3.txt', 'w'))
+		json.dump(W2I, open('./Clean/WIndex.txt', 'w'))
 
 		#Turn wise Encoding
 		WVect1 = np.zeros((self.TVec1.shape[0], self.MaxLength))
@@ -226,28 +226,28 @@ class SemEval_Clean():
 		print (WVect3D.shape)	
 		print ("*********************************************************************")						
 
-		np.savetxt('Encode_T1_Full32.csv', WVect1, delimiter=',')
-		np.savetxt('Encode_T2_Full32.csv', WVect2, delimiter=',')
-		np.savetxt('Encode_T3_Full33.csv', WVect3, delimiter=',')
-		np.savetxt('Encode_T1T2T3_Full33.csv', WVectF, delimiter=',')		
+		np.savetxt('./Encode/T1_Full.csv', WVect1, delimiter=',')
+		np.savetxt('./Encode/T2_Full.csv', WVect2, delimiter=',')
+		np.savetxt('./Encode/T3_Full.csv', WVect3, delimiter=',')
+		np.savetxt('./Encode/T1T2T3_Full.csv', WVectF, delimiter=',')		
 
-		np.savetxt('Encode_T1_Dev32.csv', WVect1D, delimiter=',')
-		np.savetxt('Encode_T2_Dev32.csv', WVect2D, delimiter=',')
-		np.savetxt('Encode_T3_Dev33.csv', WVect3D, delimiter=',')
-		np.savetxt('Encode_T1T2T3_Dev33.csv', WVectFD, delimiter=',')		
+		np.savetxt('./Encode/T1_Dev.csv', WVect1D, delimiter=',')
+		np.savetxt('./Encode/T2_Dev.csv', WVect2D, delimiter=',')
+		np.savetxt('./Encode/T3_Dev.csv', WVect3D, delimiter=',')
+		np.savetxt('./Encode/T1T2T3_Dev.csv', WVectFD, delimiter=',')		
 
 		print ('Hello')
 
 if __name__ == "__main__":
 
 	#Define the file paths and directories
-	Turn1 = "T1_v3.csv"
-	Turn2 = "T2_v3.csv"
-	Turn3 = "T3_v3.csv"
-	Turn1D = "T1_Dev_v3.csv"
-	Turn2D = "T2_Dev_v3.csv"
-	Turn3D = "T3_Dev_v3.csv"
-	Encode = 1
+	Turn1 = "./Clean/T1_v3.csv"
+	Turn2 = "./Clean/T2_v3.csv"
+	Turn3 = "./Clean/T3_v3.csv"
+	Turn1D = "./Clean/T1_Dev_v3.csv"
+	Turn2D = "./Clean/T2_Dev_v3.csv"
+	Turn3D = "./Clean/T3_Dev_v3.csv"
+	Encode = 0
 
 	#Call the Training constructor
 	SEClean = SemEval_Clean(Turn1, Turn2, Turn3, Turn1D, Turn2D, Turn3D)
