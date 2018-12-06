@@ -233,37 +233,8 @@ class SemEval_Classify():
 		#Word Vectors based on Pre Trained GloVe
 		##########################################################
 
-		#Getting the unique words
-		XUni = pd.read_csv('Vocabulary_Dev_v3.txt', header=None, encoding='utf-8', delimiter='\n').as_matrix()
-		XUni = XUni.ravel()
-
-		print (len(XUni))
-
-		#Reading the word to indices
-		W2I = json.load(open('WIndex_Dev_v3.txt'))
-
 		#Reading the 100 dimensional word vectors from GloVe
-		embedding_index = dict()
-		f = open('glove.6B.100d.txt', encoding='utf-8')
-		for line in f:
-			values = line.split()
-			word = values[0]
-			coefs = np.asarray(values[1:], dtype='float32')
-			embedding_index[word] = coefs
-		f.close()
-
-		#Populating the GloVe based representation for words in the dataset
-		vocabulary_size = 19999#len(XUni)
-		embedding_matrix = np.zeros((vocabulary_size+1, 100))
-		for word in XUni:
-			Idx = W2I[word]
-			embedding_vector = embedding_index.get(word)
-			if(embedding_vector is not None):
-				embedding_matrix[Idx] = embedding_vector
-			else:
-#				embedding_matrix[Idx] = w2v[word]
-				count = count + 1
-				continue		
+		embedding_matrix = pd.read_csv('./GloVe/glove_Embed_100d.csv', header=None).as_matrix()		
 
 		##########################################################
 		#Defining the Network
@@ -322,7 +293,7 @@ class SemEval_Classify():
 				maxf1 = loss
 
 				print ('Saving Start')
-				model.save('SemMod_HAN.h5')
+				model.save('SemMod_HN.h5')
 				print ('Saving Stop')
 
 			val2 = model.predict([XValid_1, XValid_2, XValid_3], batch_size=bSize, verbose=2)
@@ -331,7 +302,7 @@ class SemEval_Classify():
 			f1 = f1_score(YVa, res, labels=[1, 2, 3], average='micro')
 			print (f1)
 
-		model = load_model('SemMod_HN_Att.h5', custom_objects={'AttLayer2' :  AttLayer2})		
+		model = load_model('SemMod_HN.h5', custom_objects={'AttLayer2' :  AttLayer2})		
 
 		#Evaluation and Prediction
 		scores1 = model.evaluate([XTrain_1, XTrain_2, XTrain_3], YTrain, batch_size=bSize, verbose=2)
@@ -376,16 +347,16 @@ class SemEval_Classify():
 if __name__ == "__main__":
 
 	#Define the file paths and directories
-	WVect1 = "Encode_T1_Full32.csv"
-	WVect2 = "Encode_T2_Full32.csv"
-	WVect3 = "Encode_T3_Full32.csv"
-	WVectF = "Encode_T1T2T3_Full33.csv"
-	label = "Label.csv"
+	WVect1 = "./Encode/T1_Full.csv"
+	WVect2 = "./Encode/T2_Full.csv"
+	WVect3 = "./Encode/T3_Full.csv"
+	WVectF = "./Encode/T1T2T3_Full.csv"
+	label = "./Encode/Label.csv"
 
-	WVect1D = "Encode_T1_Dev32.csv"
-	WVect2D = "Encode_T2_Dev32.csv"
-	WVect3D = "Encode_T3_Dev32.csv"
-	WVectFD = "Encode_T1T2T3_Dev33.csv"	
+	WVect1D = "./Encode/T1_Dev.csv"
+	WVect2D = "./Encode/T2_Dev.csv"
+	WVect3D = "./Encode/T3_Dev.csv"
+	WVectFD = "./Encode/T1T2T3_Dev.csv"	
 
 	#Call the Training constructor
 	SEClassify = SemEval_Classify(WVect1, WVect2, WVect3, WVectF, label, WVect1D, WVect2D, WVect3D, WVectFD)
