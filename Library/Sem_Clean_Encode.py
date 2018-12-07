@@ -11,15 +11,10 @@ import csv
 import numpy as np
 import pandas as pd
 import scipy
-import pickle
-import matplotlib.pyplot as plt
-import gensim
 import string
 import itertools
 import json
 
-from random import random
-from random import randint
 from sklearn.metrics import roc_auc_score, recall_score, precision_score
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.model_selection import StratifiedKFold, StratifiedShuffleSplit
@@ -44,7 +39,6 @@ from keras import regularizers, optimizers
 from keras.layers.normalization import BatchNormalization
 from keras.callbacks import ReduceLROnPlateau
 from keras import backend as K
-from functools import partial, update_wrapper
 
 
 class SemEval_Clean():

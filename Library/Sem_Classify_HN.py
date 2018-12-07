@@ -19,16 +19,8 @@ import tensorflow as tf
 import csv
 import pandas as pd
 import scipy
-import pickle
-import matplotlib.pyplot as plt
-import gensim
 import itertools
-import json
-import codecs
 
-from tqdm import tqdm
-from random import random
-from random import randint
 from sklearn.metrics import roc_auc_score, recall_score, precision_score, f1_score
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.model_selection import StratifiedKFold, StratifiedShuffleSplit
@@ -56,7 +48,6 @@ from keras.callbacks import ReduceLROnPlateau
 from keras import backend as K
 from keras.constraints import unit_norm
 from keras.layers.core import Reshape
-from functools import partial, update_wrapper
 from keras.engine.topology import Layer
 
 class AttLayer2(Layer):
