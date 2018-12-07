@@ -65,7 +65,8 @@ class SemEval_Clean():
 		self.table = str.maketrans('', '', string.punctuation)
 
 		#Max length of input sentences
-		self.MaxLength = 15
+		self.MaxLength1 = 10
+		self.MaxLength2 = 15
 
 	#Finding the Vocabulary
 	def CreateVoc(self):
@@ -112,11 +113,12 @@ class SemEval_Clean():
 		W2I = dict(zip(TWord, TOne))
 		json.dump(W2I, open('./Clean/WIndex.txt', 'w'))
 
+		
 		#Turn wise Encoding
-		WVect1 = np.zeros((self.TVec1.shape[0], self.MaxLength))
-		WVect2 = np.zeros((self.TVec2.shape[0], self.MaxLength))
-		WVect3 = np.zeros((self.TVec3.shape[0], self.MaxLength))
-		WVectF = np.zeros((self.TVec1.shape[0], self.MaxLength))		
+		WVect1 = np.zeros((self.TVec1.shape[0], self.MaxLength1))
+		WVect2 = np.zeros((self.TVec2.shape[0], self.MaxLength1))
+		WVect3 = np.zeros((self.TVec3.shape[0], self.MaxLength1))
+		WVectF = np.zeros((self.TVec1.shape[0], self.MaxLength2))		
 
 		for i in range(self.TVec1.shape[0]):
 
@@ -148,17 +150,17 @@ class SemEval_Clean():
 			encoding_docs_F = [np.append(encoding_docs_F, encoding_docs_3)]
 			
 			#Padding Sequences
-			WVect1[i] = pad_sequences(encoding_docs_1, maxlen=self.MaxLength, padding='post')[0]
-			WVect2[i] = pad_sequences(encoding_docs_2, maxlen=self.MaxLength, padding='post')[0]
-			WVect3[i] = pad_sequences(encoding_docs_3, maxlen=self.MaxLength, padding='post')[0]
-			WVectF[i] = pad_sequences(encoding_docs_F, maxlen=self.MaxLength, padding='post')[0]			
+			WVect1[i] = pad_sequences(encoding_docs_1, maxlen=self.MaxLength1, padding='post')[0]
+			WVect2[i] = pad_sequences(encoding_docs_2, maxlen=self.MaxLength1, padding='post')[0]
+			WVect3[i] = pad_sequences(encoding_docs_3, maxlen=self.MaxLength1, padding='post')[0]
+			WVectF[i] = pad_sequences(encoding_docs_F, maxlen=self.MaxLength2, padding='post')[0]			
 
 
 		#Turn wise Encoding for Dev
-		WVect1D = np.zeros((self.TVec1D.shape[0], self.MaxLength))
-		WVect2D = np.zeros((self.TVec2D.shape[0], self.MaxLength))
-		WVect3D = np.zeros((self.TVec3D.shape[0], self.MaxLength))
-		WVectFD = np.zeros((self.TVec1D.shape[0], self.MaxLength))		
+		WVect1D = np.zeros((self.TVec1D.shape[0], self.MaxLength1))
+		WVect2D = np.zeros((self.TVec2D.shape[0], self.MaxLength1))
+		WVect3D = np.zeros((self.TVec3D.shape[0], self.MaxLength1))
+		WVectFD = np.zeros((self.TVec1D.shape[0], self.MaxLength2))		
 
 		for i in range(self.TVec1D.shape[0]):
 
@@ -190,10 +192,10 @@ class SemEval_Clean():
 			encoding_docs_F = [np.append(encoding_docs_F, encoding_docs_3)]			
 
 			#Padding Sequences
-			WVect1D[i] = pad_sequences(encoding_docs_1, maxlen=self.MaxLength, padding='post')[0]
-			WVect2D[i] = pad_sequences(encoding_docs_2, maxlen=self.MaxLength, padding='post')[0]
-			WVect3D[i] = pad_sequences(encoding_docs_3, maxlen=self.MaxLength, padding='post')[0]
-			WVectFD[i] = pad_sequences(encoding_docs_F, maxlen=self.MaxLength, padding='post')[0]			
+			WVect1D[i] = pad_sequences(encoding_docs_1, maxlen=self.MaxLength1, padding='post')[0]
+			WVect2D[i] = pad_sequences(encoding_docs_2, maxlen=self.MaxLength1, padding='post')[0]
+			WVect3D[i] = pad_sequences(encoding_docs_3, maxlen=self.MaxLength1, padding='post')[0]
+			WVectFD[i] = pad_sequences(encoding_docs_F, maxlen=self.MaxLength2, padding='post')[0]			
 
 
 		print (self.TVec1[1000, 1])
@@ -247,7 +249,7 @@ if __name__ == "__main__":
 	Turn1D = "./Clean/T1_Dev_v3.csv"
 	Turn2D = "./Clean/T2_Dev_v3.csv"
 	Turn3D = "./Clean/T3_Dev_v3.csv"
-	Encode = 0
+	Encode = 1
 
 	#Call the Training constructor
 	SEClean = SemEval_Clean(Turn1, Turn2, Turn3, Turn1D, Turn2D, Turn3D)
